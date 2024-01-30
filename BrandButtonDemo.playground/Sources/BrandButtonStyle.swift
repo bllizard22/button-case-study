@@ -43,10 +43,8 @@ public enum BrandButtonStyle {
             case .custom(configure: let configure):
                 if let color = configure.highlightedTitleColor {
                     return color
-                } else if let color = configure.normalTitleColor {
-                    return color.withAlphaComponent(0.5)
                 } else {
-                    return ColorPalette.neutralsWhite
+                    return (configure.normalTitleColor ?? ColorPalette.neutralsWhite).withAlphaComponent(0.5)
                 }
         }
     }
@@ -99,10 +97,8 @@ public enum BrandButtonStyle {
             case .custom(configure: let configure):
                 if let color = configure.highlightedBackgroundColor {
                     return color
-                } else if let color = configure.normalBackgroundColor {
-                    return color.withAlphaComponent(0.5)
                 } else {
-                    return ColorPalette.trvGreen_900
+                    return (configure.normalBackgroundColor ?? ColorPalette.trvGreen_900).withAlphaComponent(0.5)
                 }
         }
     }

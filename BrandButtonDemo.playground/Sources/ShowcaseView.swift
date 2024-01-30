@@ -1,7 +1,7 @@
+import Foundation
 import UIKit
-import PlaygroundSupport
 
-class MyViewController : UIViewController {
+public final class ShowcaseView: UIView {
 
     private lazy var customStyle = CustomButtonStyle(
         normalTitleColor: ColorPalette.trvBrandOrange,
@@ -12,7 +12,8 @@ class MyViewController : UIViewController {
 
     private let defaultInset: CGFloat = 40
     private let bellIcon = UIImage(systemName: "bell")
-    private let starIcon = UIImage(systemName: "star.fill")
+    private let starIcon = UIImage(systemName: "star")
+    private let starFillIcon = UIImage(systemName: "star.fill")
     private let tapAction: () -> Void = { print("Tapped!") }
 
     private lazy var greenContainer: UIStackView = {
@@ -30,35 +31,23 @@ class MyViewController : UIViewController {
         return stack
     }()
 
-    private let primary: BrandButton = BrandButton.makeButton()
-    private let secondary: BrandButton = BrandButton.makeButton()
-    private let disabled: BrandButton = BrandButton.makeButton()
+    private let primary: BrandButton = BrandButtonFactory.makeButton()
+    private let secondary: BrandButton = BrandButtonFactory.makeButton()
+    private let disabled: BrandButton = BrandButtonFactory.makeButton()
 
-    private let primaryBlue: BrandButton = BrandButton.makeButton()
-    private let secondaryBlue: BrandButton = BrandButton.makeButton()
-    private let disabledBlue: BrandButton = BrandButton.makeButton()
+    private let primaryBlue: BrandButton = BrandButtonFactory.makeButton()
+    private let secondaryBlue: BrandButton = BrandButtonFactory.makeButton()
+    private let disabledBlue: BrandButton = BrandButtonFactory.makeButton()
 
-    private let primaryWide: BrandButton = BrandButton.makeButton()
-    private let custom: BrandButton = BrandButton.makeButton()
+    private let primaryWide: BrandButton = BrandButtonFactory.makeButton()
+    private let custom: BrandButton = BrandButtonFactory.makeButton()
 
-    override func loadView() {
-        let view = UIView()
-        view.backgroundColor = .white
-        view.frame = CGRect(x: 0, y: 0, width: 400, height: 500)
-        
-        self.view = view
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    public func setupView() {
+        backgroundColor = .white
 
         [greenContainer, blueContainer, primaryWide, custom].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview($0)
+            addSubview($0)
         }
 
         [primary, secondary, disabled].forEach {
@@ -69,77 +58,73 @@ class MyViewController : UIViewController {
         }
 
         NSLayoutConstraint.activate([
-            greenContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: defaultInset),
-            greenContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            greenContainer.trailingAnchor.constraint(equalTo: view.centerXAnchor),
+            greenContainer.topAnchor.constraint(equalTo: topAnchor, constant: defaultInset),
+            greenContainer.leadingAnchor.constraint(equalTo: leadingAnchor),
+            greenContainer.trailingAnchor.constraint(equalTo: centerXAnchor),
 
             blueContainer.topAnchor.constraint(equalTo: greenContainer.topAnchor),
             blueContainer.leadingAnchor.constraint(equalTo: greenContainer.trailingAnchor),
-            blueContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            blueContainer.trailingAnchor.constraint(equalTo: trailingAnchor),
 
             primaryWide.topAnchor.constraint(equalTo: greenContainer.bottomAnchor, constant: defaultInset),
-            primaryWide.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            primaryWide.centerXAnchor.constraint(equalTo: centerXAnchor),
 
             custom.topAnchor.constraint(equalTo: primaryWide.bottomAnchor, constant: defaultInset),
-            custom.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            custom.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
 
         setupButtons()
     }
 
     private func setupButtons() {
-        primary.configure(viewModel: .init(
+        primary.configure(with: .init(
             title: "Primary",
             style: .primary(.green),
             tapAction: tapAction
         ))
-        secondary.configure(viewModel: .init(
+        secondary.configure(with: .init(
             title: "Secondary",
             style: .secondary(.green),
-            leadingIcon: starIcon,
-            tapAction: tapAction
+            leadingIcon: starIcon
         ))
-        disabled.configure(viewModel: .init(
+        disabled.configure(with: .init(
             title: "Disabled",
             style: .primary(.green),
             trailingIcon: bellIcon,
             isEnabled: false
         ))
 
-        primaryBlue.configure(viewModel: .init(
+        primaryBlue.configure(with: .init(
             title: "Primary",
             style: .primary(.blue),
             tapAction: tapAction
         ))
-        secondaryBlue.configure(viewModel: .init(
+        secondaryBlue.configure(with: .init(
             title: "Secondary",
             style: .secondary(.blue),
-            leadingIcon: starIcon,
-            tapAction: tapAction
+            leadingIcon: starIcon
         ))
-        disabledBlue.configure(viewModel: .init(
+        disabledBlue.configure(with: .init(
             title: "Disabled",
-            style: .primary(.blue),
+            style: .secondary(.blue),
             trailingIcon: bellIcon,
             isEnabled: false
         ))
 
-        primaryWide.configure(viewModel: .init(
+        primaryWide.configure(with: .init(
             title: "Fullwidth",
             style: .primary(.blue),
             leadingIcon: bellIcon,
-            trailingIcon: starIcon,
+            trailingIcon: starFillIcon,
             isFullWidth: true
         ))
 
-        custom.configure(viewModel: .init(
+        custom.configure(with: .init(
             title: "",
             style: .custom(configure: customStyle),
-            leadingIcon: starIcon,
+            leadingIcon: starFillIcon,
             tapAction: tapAction
         ))
         custom.setTitle("Custom style")
     }
 }
-
-PlaygroundPage.current.liveView = MyViewController()

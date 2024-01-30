@@ -5,7 +5,7 @@ public final class BrandButton: UIButton {
 
     public override var isHighlighted: Bool {
         didSet {
-            updateColorsIfNeeded()
+            updateColorsIfNeeded(animated: true)
         }
     }
 
@@ -37,6 +37,7 @@ public final class BrandButton: UIButton {
         let image = UIImageView()
         image.isHidden = true
         image.contentMode = .scaleAspectFit
+        image.layer.cornerRadius = Constant.imageCornerRadius
         return image
     }()
 
@@ -44,21 +45,15 @@ public final class BrandButton: UIButton {
         let image = UIImageView()
         image.isHidden = true
         image.contentMode = .scaleAspectFit
+        image.layer.cornerRadius = Constant.imageCornerRadius
         return image
     }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        layer.cornerRadius = Constant.buttonCornerRadius
-        layer.borderWidth = Constant.borderWidth
-        addTarget(self, action: #selector(onTouchUpInside), for: .touchUpInside)
-
-        configStackView()
+        setupSubviews()
         setStyle(buttonStyle)
-
-        isAccessibilityElement = true
-        accessibilityTraits = .button
     }
 
     required init?(coder: NSCoder) {
@@ -66,6 +61,17 @@ public final class BrandButton: UIButton {
     }
 
     // MARK: - Private Methods
+
+    private func setupSubviews() {
+        layer.cornerRadius = Constant.buttonCornerRadius
+        layer.borderWidth = Constant.borderWidth
+        addTarget(self, action: #selector(onTouchUpInside), for: .touchUpInside)
+
+        configStackView()
+
+        isAccessibilityElement = true
+        accessibilityTraits = .button
+    }
 
     private func configStackView() {
         addSubview(containerView)
@@ -110,15 +116,15 @@ public final class BrandButton: UIButton {
         updateColorsIfNeeded()
     }
 
-    private func updateColorsIfNeeded() {
+    private func updateColorsIfNeeded(animated: Bool = false) {
         if isEnabled && isHighlighted {
-            updateColors(for: isHighlighted ? .highlighted : .normal)
+            updateColors(for: isHighlighted ? .highlighted : .normal, animated: animated)
         } else {
-            updateColors(for: isEnabled ? .normal : .disabled)
+            updateColors(for: isEnabled ? .normal : .disabled, animated: animated)
         }
     }
 
-    private func updateColors(for state: StyleState) {
+    private func updateColors(for state: StyleState, animated: Bool) {
         let titleColor: UIColor
         let background: UIColor
 
@@ -134,15 +140,17 @@ public final class BrandButton: UIButton {
                 background = buttonStyle.disabledBackgroundColor
         }
 
-        label.textColor = titleColor
-        leadingImage.tintColor = titleColor
-        trailingImage.tintColor = titleColor
-        backgroundColor = background
+        UIView.animate(withDuration: animated ? 0.15 : 0, delay: 0, options: .curveEaseInOut) {
+            self.label.textColor = titleColor
+            self.leadingImage.tintColor = titleColor
+            self.trailingImage.tintColor = titleColor
+            self.backgroundColor = background
 
-        if case .secondary = buttonStyle {
-            layer.borderColor = titleColor.cgColor
-        } else {
-            layer.borderColor = background.cgColor
+            if case .secondary = self.buttonStyle {
+                self.layer.borderColor = titleColor.cgColor
+            } else {
+                self.layer.borderColor = background.cgColor
+            }
         }
     }
 
@@ -154,7 +162,7 @@ public final class BrandButton: UIButton {
 // MARK: - ViewModel
 
 extension BrandButton {
-    public func configure(viewModel: ViewModel) {
+    public func configure(with viewModel: ViewModel) {
         if let isEnabled = viewModel.isEnabled {
             self.isEnabled = isEnabled
         }
@@ -196,14 +204,6 @@ extension BrandButton {
     }
 }
 
-// MARK: - Factory Methods
-
-public extension BrandButton {
-    static func makeButton() -> BrandButton {
-        BrandButton(frame: .zero)
-    }
-}
-
 // MARK: - Constants
 
 extension BrandButton {
@@ -217,6 +217,7 @@ extension BrandButton {
         static let containerSpacing: CGFloat = 12
 
         static let imageSide: CGFloat = 24
+        static let imageCornerRadius: CGFloat = 4
     }
 
     private enum StyleState {

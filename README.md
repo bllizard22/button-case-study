@@ -3,7 +3,7 @@
 ### Requirements:
 - [X] The button should follow the design and the specifications represented in the Figma file above.
 
-- [ ] The button should contain the follow colour variations:
+- [X] The button should contain the follow colour variations:
     a. Green, Primary
     b. Green, Secondary
     c. Blue, Primary

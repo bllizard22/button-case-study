@@ -15,7 +15,7 @@ public final class BrandButton: UIButton {
         }
     }
 
-    private var buttonStyle: BrandButtonStyle = .primary
+    private var buttonStyle: BrandButtonStyle = .primary(.green)
     private var tapHandler: (() -> Void)?
     private var widthConstraint: NSLayoutConstraint?
 
@@ -36,12 +36,14 @@ public final class BrandButton: UIButton {
     private lazy var leadingImage: UIImageView = {
         let image = UIImageView()
         image.isHidden = true
+        image.contentMode = .scaleAspectFit
         return image
     }()
 
     private lazy var trailingImage: UIImageView = {
         let image = UIImageView()
         image.isHidden = true
+        image.contentMode = .scaleAspectFit
         return image
     }()
 
@@ -53,7 +55,7 @@ public final class BrandButton: UIButton {
         addTarget(self, action: #selector(onTouchUpInside), for: .touchUpInside)
 
         configStackView()
-        setStyle()
+        setStyle(buttonStyle)
 
         isAccessibilityElement = true
         accessibilityTraits = .button
@@ -76,8 +78,7 @@ public final class BrandButton: UIButton {
         let width = widthAnchor.constraint(equalToConstant: 10)
         widthConstraint = width
         NSLayoutConstraint.activate([
-//            heightAnchor.constraint(equalToConstant: Constant.buttonHeight),
-//            width,
+            heightAnchor.constraint(equalToConstant: Constant.buttonHeight),
 
             containerView.topAnchor.constraint(
                 equalTo: topAnchor,
@@ -104,7 +105,7 @@ public final class BrandButton: UIButton {
         ])
     }
 
-    private func setStyle(style: BrandButtonStyle = .primary) {
+    private func setStyle(_ style: BrandButtonStyle) {
         buttonStyle = style
         updateColorsIfNeeded()
     }
@@ -158,9 +159,7 @@ extension BrandButton {
             self.isEnabled = isEnabled
         }
 
-        let title = NSAttributedString(string: viewModel.title, attributes: makeAttributes())
-        label.attributedText = title
-        accessibilityLabel = viewModel.title
+        setTitle(viewModel.title)
 
         leadingImage.isHidden = viewModel.leadingIcon == nil
         leadingImage.image = viewModel.leadingIcon
@@ -169,11 +168,18 @@ extension BrandButton {
 
         tapHandler = viewModel.tapAction
 
-        setStyle(style: viewModel.style)
+        setStyle(viewModel.style)
 
-//        if let width = superview?.frame.width {
-//            widthConstraint?.constant = width
-//        }
+        widthConstraint?.isActive = viewModel.isFullWidth == true
+        if let width = superview?.frame.width {
+            widthConstraint?.constant = width
+        }
+    }
+
+    public func setTitle(_ text: String) {
+        let title = NSAttributedString(string: text, attributes: makeAttributes())
+        label.attributedText = title
+        accessibilityLabel = text
     }
 
     private func makeAttributes() -> [NSAttributedString.Key: Any] {
@@ -193,7 +199,7 @@ extension BrandButton {
 // MARK: - Factory Methods
 
 public extension BrandButton {
-    static func makeGreenButton() -> BrandButton {
+    static func makeButton() -> BrandButton {
         BrandButton(frame: .zero)
     }
 }

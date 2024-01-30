@@ -2,8 +2,13 @@ import Foundation
 import UIKit
 
 public enum BrandButtonStyle {
-    case primary
-    case secondary
+    public enum Variant {
+        case green
+        case blue
+    }
+
+    case primary(_ variant: Variant)
+    case secondary(_ variant: Variant)
     case custom(configure: CustomButtonStyle)
 
     // MARK: - Title Color
@@ -12,8 +17,13 @@ public enum BrandButtonStyle {
         switch self {
             case .primary:
                 return ColorPalette.neutralsWhite
-            case .secondary:
-                return ColorPalette.trvGreen_700
+            case .secondary(let variant):
+                switch variant {
+                    case .green:
+                        return ColorPalette.trvGreen_700
+                    case .blue:
+                        return ColorPalette.trvBlue_700
+                }
             case .custom(configure: let configure):
                 return configure.normalTitleColor ?? ColorPalette.neutralsWhite
         }
@@ -23,8 +33,13 @@ public enum BrandButtonStyle {
         switch self {
             case .primary:
                 return ColorPalette.neutralsWhite
-            case .secondary:
-                return ColorPalette.trvGreen_900
+            case .secondary(let variant):
+                switch variant {
+                    case .green:
+                        return ColorPalette.trvGreen_900
+                    case .blue:
+                        return ColorPalette.trvBlue_900
+                }
             case .custom(configure: let configure):
                 if let color = configure.highlightedTitleColor {
                     return color
@@ -51,8 +66,13 @@ public enum BrandButtonStyle {
 
     public var normalBackgroundColor: UIColor {
         switch self {
-            case .primary:
-                return ColorPalette.trvGreen_700
+            case .primary(let variant):
+                switch variant {
+                    case .green:
+                        return ColorPalette.trvGreen_700
+                    case .blue:
+                        return ColorPalette.trvBlue_700
+                }
             case .secondary:
                 return ColorPalette.neutralsWhite
             case .custom(configure: let configure):
@@ -62,10 +82,20 @@ public enum BrandButtonStyle {
 
     public var highlightedBackgroundColor: UIColor {
         switch self {
-            case .primary:
-                return ColorPalette.trvGreen_900
-            case .secondary:
-                return ColorPalette.trvGreen_100
+            case .primary(let variant):
+                switch variant {
+                    case .green:
+                        return ColorPalette.trvGreen_900
+                    case .blue:
+                        return ColorPalette.trvBlue_900
+                }
+            case .secondary(let variant):
+                switch variant {
+                    case .green:
+                        return ColorPalette.trvGreen_100
+                    case .blue:
+                        return ColorPalette.trvBlue_100
+                }
             case .custom(configure: let configure):
                 if let color = configure.highlightedBackgroundColor {
                     return color

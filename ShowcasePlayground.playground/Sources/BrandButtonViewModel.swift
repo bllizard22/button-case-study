@@ -8,14 +8,16 @@ public extension BrandButton {
         public var leadingIcon: UIImage?
         public var trailingIcon: UIImage?
         public var isEnabled: Bool?
+        public var isFullWidth: Bool?
         public var tapAction: (() -> Void)?
 
         public init(
             title: String,
-            style: BrandButtonStyle = .primary,
+            style: BrandButtonStyle = .primary(.green),
             leadingIcon: UIImage? = nil,
             trailingIcon: UIImage? = nil,
             isEnabled: Bool? = nil,
+            isFullWidth: Bool? = nil,
             tapAction: (() -> Void)? = nil
         ) {
             self.title = title
@@ -23,6 +25,7 @@ public extension BrandButton {
             self.leadingIcon = leadingIcon
             self.trailingIcon = trailingIcon
             self.isEnabled = isEnabled
+            self.isFullWidth = isFullWidth
             self.tapAction = tapAction
         }
     }

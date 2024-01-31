@@ -40,7 +40,18 @@ let viewModel: BrandButton.ViewModel
 button.configure(with: viewModel)
 ```
 
-Title text can be set from dedicated method
+Where BrandButton.ViewModel has following types and default values according to specification in Figma:
+```swift
+var title: String
+var style: BrandButtonStyle
+var leadingIcon: UIImage? = nil
+var trailingIcon: UIImage? = nil
+var isEnabled: Bool = true
+var isFullWidth: Bool = false
+var tapAction: (() -> Void)? = nil
+```
+
+Title text can also be set from dedicated method
 ```swift
 button.setTitle("Some new text")
 ```

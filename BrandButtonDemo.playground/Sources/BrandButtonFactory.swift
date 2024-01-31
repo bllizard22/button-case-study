@@ -6,6 +6,8 @@ public struct BrandButtonFactory {
         BrandButton(frame: .zero)
     }
 
+    // Examples of specific factory methods for frequent cases
+
     public static func makeAgreeButton(tapAction: @escaping () -> Void) -> BrandButton {
         let button = BrandButton(frame: .zero)
         button.configure(with: .init(
@@ -27,6 +29,8 @@ public struct BrandButtonFactory {
         return button
     }
 }
+
+// MARK: - Stubs of text and image providers
 
 enum SomeTextProvider {
     static let agree = "Agree"

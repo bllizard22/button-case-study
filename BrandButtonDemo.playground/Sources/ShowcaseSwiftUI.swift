@@ -6,11 +6,9 @@ struct BrandButtonSwiftUI: UIViewRepresentable {
     var model: BrandButton.ViewModel
 
     func makeUIView(context: Context) -> UIView {
-        // Create and configure your UIKit view
         let customView = BrandButtonFactory.makeButton()
 
         return customView
-
     }
 
     func updateUIView(_ uiView: UIView, context: Context) {

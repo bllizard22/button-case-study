@@ -18,19 +18,24 @@
 **Bonus:**
 - [X] Allow customisation of the button's appearance, such as colour, font, images, for each button state
 - [X] Implement animations for state transitions (e.g., fading in/out).
-- [ ] Allow using the button in both UIKit and SwiftUI
+- [X] Allow using the button in both UIKit and SwiftUI
 
-## Solution Description
+## Solution
 
 <h3 id="how-to-use">How to Use Component</h3>
-1. Create default empty button by calling static factory method:
+1. Create default empty button by calling static factory method
 ```swift
 let button = BrandButtonFactory.makeButton()
 ```
-Then configure it's appearance:
+Then configure it's appearance
 ```swift
 let viewModel: BrandButton.ViewModel
 button.configure(with: viewModel)
+```
+
+Title text can be set from dedicated method
+```swift
+button.setTitle("Some new text")
 ```
 
 2. Factory can be extended for frequently reused combination of style and text to remove boilerplate lines:
@@ -51,7 +56,8 @@ This will create (implementation can be tuned to use with LocalizedString):
 ------
 
 ### Quick start guide
-For quick-check the code described below you can launch `BrandButtonDemo.playground`
+For quick-check the code described below you can launch `BrandButtonDemo.playground`.
+You can toggle `needToUseUIKit` flag to switch UIKit and SwiftUI-wrapper implementations.
 
 <img width="350" alt="image" src="https://github.com/bllizard22/button-case-study/assets/37974438/b4c36cae-a90b-4851-a28b-7f112ab69a49">
 
@@ -59,7 +65,10 @@ For quick-check the code described below you can launch `BrandButtonDemo.playgro
 ------
 
 ### File Structure
-- `BrandButton` - custom reusable button based on UIButton with title, leading and trailing images.
+- `BrandButton` - custom reusable button based on UIButton with title, leading and trailing images:
+    - Can strech to parent view or compress to subviews content size with `isFullWidth` flag
+    - Has short transition animation (0.15s) between `.normal` and `.highlighted` states
+    - Is accessibility element and submits current text to VoiceOver
 
 - `BrandButtonStyle` - enum responsible for storing component's styles for various states:
     - Green / Blue
@@ -73,4 +82,6 @@ For quick-check the code described below you can launch `BrandButtonDemo.playgro
 
 - `ColorPalette` - short implementation of solution for reusable color styles.
 
-- `ShowcaseView` - demo container view to showcase component styles and states
+- `ShowcaseView` - demo container view to showcase component styles and states.
+
+- `ShowcaseSwiftUI` - view to demonstrate usage in SwiftUI (stuck a little bit here with using correct intrinsic size).

@@ -53,7 +53,8 @@ This will create (implementation can be tuned to use with LocalizedString):
 ### Quick start guide
 For quick-check the code described below you can launch `BrandButtonDemo.playground`
 
-<img width="350" alt="image" src="https://github.com/bllizard22/button-case-study/assets/37974438/b7451ed6-2b3b-4d4f-b99b-2050d3d352c1">
+<img width="350" alt="image" src="https://github.com/bllizard22/button-case-study/assets/37974438/b4c36cae-a90b-4851-a28b-7f112ab69a49">
+
 
 ------
 

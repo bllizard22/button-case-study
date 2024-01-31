@@ -15,9 +15,12 @@ public final class BrandButton: UIButton {
         }
     }
 
+
     private var buttonStyle: BrandButtonStyle = .primary(.green)
     private var tapHandler: (() -> Void)?
-    private var widthConstraint: NSLayoutConstraint?
+    private lazy var widthConstraint: NSLayoutConstraint = {
+        widthAnchor.constraint(equalToConstant: 0)
+    }()
 
     private lazy var containerView: UIStackView = {
         let stack = UIStackView(frame: .zero)
@@ -81,8 +84,6 @@ public final class BrandButton: UIButton {
             containerView.addArrangedSubview($0)
         }
 
-        let width = widthAnchor.constraint(equalToConstant: 10)
-        widthConstraint = width
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: Constant.buttonHeight),
 
@@ -163,9 +164,7 @@ public final class BrandButton: UIButton {
 
 extension BrandButton {
     public func configure(with viewModel: ViewModel) {
-        if let isEnabled = viewModel.isEnabled {
-            self.isEnabled = isEnabled
-        }
+        isEnabled = viewModel.isEnabled
 
         setTitle(viewModel.title)
 
@@ -178,9 +177,9 @@ extension BrandButton {
 
         setStyle(viewModel.style)
 
-        widthConstraint?.isActive = viewModel.isFullWidth == true
+        widthConstraint.isActive = viewModel.isFullWidth == true
         if let width = superview?.frame.width {
-            widthConstraint?.constant = width
+            widthConstraint.constant = width
         }
     }
 

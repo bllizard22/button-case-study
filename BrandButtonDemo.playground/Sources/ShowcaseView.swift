@@ -33,11 +33,13 @@ public final class ShowcaseView: UIView {
 
     private let primary: BrandButton = BrandButtonFactory.makeButton()
     private let secondary: BrandButton = BrandButtonFactory.makeButton()
-    private let disabled: BrandButton = BrandButtonFactory.makeButton()
+    private let primaryDisabled: BrandButton = BrandButtonFactory.makeButton()
+    private let secondaryDisabled: BrandButton = BrandButtonFactory.makeButton()
 
     private let primaryBlue: BrandButton = BrandButtonFactory.makeButton()
     private let secondaryBlue: BrandButton = BrandButtonFactory.makeButton()
-    private let disabledBlue: BrandButton = BrandButtonFactory.makeButton()
+    private let primaryDisabledBlue: BrandButton = BrandButtonFactory.makeButton()
+    private let secondaryDisabledBlue: BrandButton = BrandButtonFactory.makeButton()
 
     private let primaryWide: BrandButton = BrandButtonFactory.makeButton()
     private let custom: BrandButton = BrandButtonFactory.makeButton()
@@ -50,10 +52,10 @@ public final class ShowcaseView: UIView {
             addSubview($0)
         }
 
-        [primary, secondary, disabled].forEach {
+        [primary, secondary, primaryDisabled, secondaryDisabled].forEach {
             greenContainer.addArrangedSubview($0)
         }
-        [primaryBlue, secondaryBlue, disabledBlue].forEach {
+        [primaryBlue, secondaryBlue, primaryDisabledBlue, secondaryDisabledBlue].forEach {
             blueContainer.addArrangedSubview($0)
         }
 
@@ -87,9 +89,15 @@ public final class ShowcaseView: UIView {
             style: .secondary(.green),
             leadingIcon: starIcon
         ))
-        disabled.configure(with: .init(
+        primaryDisabled.configure(with: .init(
             title: "Disabled",
             style: .primary(.green),
+            trailingIcon: bellIcon,
+            isEnabled: false
+        ))
+        secondaryDisabled.configure(with: .init(
+            title: "Disabled",
+            style: .secondary(.green),
             trailingIcon: bellIcon,
             isEnabled: false
         ))
@@ -104,7 +112,13 @@ public final class ShowcaseView: UIView {
             style: .secondary(.blue),
             leadingIcon: starIcon
         ))
-        disabledBlue.configure(with: .init(
+        primaryDisabledBlue.configure(with: .init(
+            title: "Disabled",
+            style: .primary(.blue),
+            trailingIcon: bellIcon,
+            isEnabled: false
+        ))
+        secondaryDisabledBlue.configure(with: .init(
             title: "Disabled",
             style: .secondary(.blue),
             trailingIcon: bellIcon,
